@@ -2,7 +2,7 @@
 <html lang="en" data-bs-theme="light">
 <head>
     <meta charset="utf-8">
-	<meta http-equiv="refresh" content="20">
+	<!--<meta http-equiv="refresh" content="20">-->
     <title>乌鸡鲅托Next Bus</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 	<style>
@@ -16,6 +16,9 @@
 		margin-left:0;
 		margin-right:0;
 	}
+	.card {
+		min-height:134px;
+		}
 	h2 {
 		margin-bottom:14px
 	}
@@ -122,6 +125,7 @@
 			<small class="text-body-secondary">预估步行时间：5 分钟</small>
 				<h4><b>985</b>（MRT 美世界 <img src="/img/Downtown_Line_logo.svg" height="28px"/> / 加冷  <img src="/img/East_West_Line_logo.svg" height="28px"/> 方向）</h4>
 				<div class="row text-center">
+				{% if downstairs_985|length > 0 %}
 				{% for item in downstairs_985 %}
 					<div class="col">
 						<div class="card shadow-sm">
@@ -140,9 +144,21 @@
 						</div>
 					</div>
 				{% endfor %}
+				{% else %}
+						<div class="col">
+							<div class="card shadow-sm">
+								<div class="card-body">
+									<p class="card-text">
+									<span style="font-size:24px">结束服务</span><br>
+									<span style="font-size:40px">---</span></p>
+								</div>
+							</div>
+						</div>
+				{% endif %}
 				</div>				
 				<h4><b>176</b>（MRT 山景 / MRT 武吉班让 <img src="/img/Downtown_Line_logo.svg" height="28px"/> 方向）</h4>
 				<div class="row text-center">
+				{% if downstairs_176|length > 0 %}
 				{% for item in downstairs_176 %}
 					<div class="col">
 						<div class="card shadow-sm">
@@ -161,6 +177,17 @@
 						</div>
 					</div>
 				{% endfor %}
+				{% else %}
+						<div class="col">
+							<div class="card shadow-sm">
+								<div class="card-body">
+									<p class="card-text">
+									<span style="font-size:24px">结束服务</span><br>
+									<span style="font-size:40px">---</span></p>
+								</div>
+							</div>
+						</div>
+				{% endif %}
 				</div>
 			</div>
 		</div>
@@ -170,6 +197,7 @@
 			<small class="text-body-secondary">预估步行时间：5 分钟</small>
 				<h4><b>985</b>（MRT 武吉巴督 <img src="/img/North_South_Line_logo.svg" height="28px"/> 方向）</h4>
 				<div class="row text-center">
+				{% if downstairs_opp_985|length > 0 %}
 				{% for item in downstairs_opp_985 %}
 						<div class="col">
 							<div class="card shadow-sm">
@@ -187,9 +215,21 @@
 							</div>
 						</div>
 				{% endfor %}
+				{% else %}
+						<div class="col">
+							<div class="card shadow-sm">
+								<div class="card-body">
+									<p class="card-text">
+									<span style="font-size:24px">结束服务</span><br>
+									<span style="font-size:40px">---</span></p>
+								</div>
+							</div>
+						</div>
+				{% endif %}
 				</div>
 				<h4><b>176</b>（MRT 武吉巴督 <img src="/img/North_South_Line_logo.svg" height="28px"/> / 裕廊东 <img src="/img/East_West_Line_logo.svg" height="28px"/> 方向）</h4>
 				<div class="row text-center">
+				{% if downstairs_opp_176|length > 0 %}
 				{% for item in downstairs_opp_176 %}
 						<div class="col">
 							<div class="card shadow-sm">
@@ -207,6 +247,17 @@
 							</div>
 						</div>
 				{% endfor %}
+				{% else %}
+						<div class="col">
+							<div class="card shadow-sm">
+								<div class="card-body">
+									<p class="card-text">
+									<span style="font-size:24px">结束服务</span><br>
+									<span style="font-size:40px">---</span></p>
+								</div>
+							</div>
+						</div>
+				{% endif %}
 				</div>
 			</div>
 		</div>
@@ -218,6 +269,7 @@
 			<small class="text-body-secondary">预估步行时间：6 分钟</small>
 				<h4><b>945</b>（MRT 武吉巴督 <img src="/img/North_South_Line_logo.svg" height="28px"/> 方向）</h4>
 				<div class="row text-center">
+				{% if downstairs_945|length > 0 %}
 				{% for item in downstairs_945 %}
 						<div class="col">
 							<div class="card shadow-sm">
@@ -235,6 +287,17 @@
 							</div>
 						</div>
 				{% endfor %}
+				{% else %}
+						<div class="col">
+							<div class="card shadow-sm">
+								<div class="card-body">
+									<p class="card-text">
+									<span style="font-size:24px">结束服务</span><br>
+									<span style="font-size:40px">---</span></p>
+								</div>
+							</div>
+						</div>
+				{% endif %}
 				</div>
 			</div>
 		</div>
@@ -244,6 +307,7 @@
 				<small class="text-body-secondary">预估步行时间：11 分钟</small>
 				<h4><b>963</b> （NUS主校区 方向）</h4>
 				<div class="row text-center">
+				{% if bus_963|length > 0 %}
 				{% for item in bus_963 %}
 						<div class="col">
 							<div class="card shadow-sm">
@@ -261,6 +325,17 @@
 							</div>
 						</div>
 				{% endfor %}
+				{% else %}
+						<div class="col">
+							<div class="card shadow-sm">
+								<div class="card-body">
+									<p class="card-text">
+									<span style="font-size:24px">结束服务</span><br>
+									<span style="font-size:40px">---</span></p>
+								</div>
+							</div>
+						</div>
+				{% endif %}
 				</div>
 			</div>
 		</div>
