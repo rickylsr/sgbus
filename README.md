@@ -1,8 +1,11 @@
 # sgbus
-一个公交车到站信息面板。
+一个公交车到站信息和天气显示面板。
+
+从Gov.sg获取天气，从LTA data mall获取公交数据。
+
 ## 使用
 - 安装python3.10和pip
-- `pip install requests flask`
+- 安装依赖：`pip install -r requirements.txt`
 - 在[Land Transport Authority](https://datamall.lta.gov.sg/content/datamall/en/dynamic-data.html#Public%20Transport)申请一个API Key（秒批）
 - 如果是windows，运行`Set-Variable -Name api_key -Value [你的AccountKey]`, 如果是linux，运行`export api_key [你的AccountKey]`
 - `cd`到flask所在目录, 运行`flask run -p 8000 --host=0.0.0.0`
