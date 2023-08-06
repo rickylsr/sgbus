@@ -15,6 +15,8 @@
 
 ## 屏幕截图
 
+### 旧UI
+
 明亮模式：
 
 ![image](https://github.com/rickylsr/sgbus/assets/10785943/efb02e48-d831-49dc-a767-bf8ea6989528)
@@ -22,3 +24,9 @@
 根据时间（浏览器时间晚7-早7点）自动切换暗黑模式：
 
 ![image](https://github.com/rickylsr/sgbus/assets/10785943/b5439d72-3349-4d9f-8a74-a757749ead39)
+
+### 新UI
+
+![image](https://github.com/rickylsr/sgbus/assets/10785943/ffd96c94-f022-47a9-a42b-ab21fdf93ee0)
+
+![image](https://github.com/rickylsr/sgbus/assets/10785943/20af6a1f-487f-47eb-ac33-5efb3fb24607)
