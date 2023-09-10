@@ -27,6 +27,8 @@
 
 ### 新UI
 
+访问url：`/view2`
+
 ![image](https://github.com/rickylsr/sgbus/assets/10785943/ffd96c94-f022-47a9-a42b-ab21fdf93ee0)
 
 ![image](https://github.com/rickylsr/sgbus/assets/10785943/20af6a1f-487f-47eb-ac33-5efb3fb24607)
