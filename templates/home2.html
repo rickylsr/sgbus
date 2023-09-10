@@ -229,7 +229,22 @@
 			return hoursStr + ':' + minutesStr;
 		}
 		
+		function updateTime() {
+			const now = new Date();
+			const hours = String(now.getHours()).padStart(2, '0');
+			const minutes = String(now.getMinutes()).padStart(2, '0');
+			const seconds = String(now.getSeconds()).padStart(2, '0');
+		  
+			const currentTime = `${hours}:${minutes}:${seconds}`;
+		  
+			console.log(`当前时间：${currentTime}`);
+		  
+			// 如果需要显示在网页上，你可以这样做
+			document.getElementById("timeDisplay").innerText = `${currentTime}`;
+		}
 
+		// 每秒更新一次时间
+		
 		function fetchDataAndUpdate() {
 			// 使用fetch获取数据
 			fetch('/api2')
@@ -251,10 +266,10 @@
 						let htmlContent;
 						var departure_note =``
 						if ( 0 <= parseInt(diff) - walktime[key] && parseInt(diff) - walktime[key] < 5 ) {
-							departure_note = `<span style="font-size:30px" class="badge rounded-pill my-0 flashing">
+							departure_note = `<span style="font-size:30px" class="badge rounded-pill my-0 flashing mx-1">
 											现在出发</span>`;
 						} else if ( parseInt(diff) - walktime[key] < 0  ) {
-							departure_note = `<span style="font-size:30px" class="badge rounded-pill text-bg-secondary my-0 ">
+							departure_note = `<span style="font-size:30px" class="badge rounded-pill text-bg-secondary my-0 mx-1">
 											即将到站</span>`;
 						}
 						if (no_of_card == 0) {
@@ -267,7 +282,7 @@
 												</span>
 											</div>
 											<div class="col-2">
-												<span style="font-size:50px" class="badge ${bus_style[key]} my-0">
+												<span style="font-size:42px" class="badge ${bus_style[key]} my-0">
 													${bus_number[key]}
 												</span>
 											</div>
@@ -391,10 +406,10 @@
 				  // 查找是否存在包含'flashing'类的元素
 				  if (item.querySelector('.flashing') || item.querySelector('.flashing-rain')) {
 					// 如果找到，则设置这个特定幻灯片的间隔时间
-					item.setAttribute('data-bs-interval', '11500'); // 例如，10秒
+					item.setAttribute('data-bs-interval', '12000'); // 例如，10秒
 				  } else {
 					// 设置其他幻灯片的间隔时间
-					item.setAttribute('data-bs-interval', '5000'); // 例如，5秒
+					item.setAttribute('data-bs-interval', '9000'); // 例如，5秒
 				  }
 				});
 			})
@@ -407,15 +422,22 @@
 			fetchDataAndUpdate();
 			//setInterval(fetchDataAndUpdate, 21000); // 每21秒更新一次
 			setInterval(set_color_mode, 200000); // 每200秒更新一次
-			
+			setInterval(updateTime, 1000);
 		}
 	</script>
 	<!--暗黑模式section结束-->
 	<main>
+	<div class="position-absolute top-0 end-0 m-0 mx-2"  style="z-index: 9999;">
+		<div class="card">
+		  <div class="card-body">
+			<p class="card-title m-0" style="font-size:32px">当前时间：<b id="timeDisplay"></b></p>
+		  </div>
+		</div>
+	</div>
 	<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-pause="false">
 		<div class="carousel-inner">
 		<!-- 第一个模块 -->
-		<div class="carousel-item active light-card-bg" data-bs-interval="8000" id="first_carousel">
+		<div class="carousel-item active light-card-bg" data-bs-interval="10000" id="first_carousel">
 		  <div class="container-xxl col m-0 m-auto full-scring-768">
 			<div class="p-3 rounded-3">
 			<h1 class="text-body-emphasis"><b>小区后门</b></h1>
