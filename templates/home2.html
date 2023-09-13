@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="utf-8">
+	<meta http-equiv="Refresh" content="1200" />
+    <title>乌鸡鲅托Next Bus</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	<style>
+	.full-scring-768 {
+		height:768px!important;
+	}
+	.light-card-bg {
+		background-color: #DCD9D4;
+		background-image: linear-gradient(to bottom, rgba(255,255,255,0.50) 0%, rgba(0,0,0,0.50) 100%), radial-gradient(at 50% 0%, rgba(255,255,255,0.10) 0%, rgba(0,0,0,0.50) 50%);
+		background-blend-mode: soft-light,screen;
+	}
+	.dark-card-bg {
+		background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
+	}
+	h2 {
+		margin-bottom:14px
+	}
+	h4 {
+		margin-top:8px
+	}
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+	  /* 快要出发时候的闪烁样式，黄白间隔 */
+	  @keyframes flash { 
+		0% { background-color: var(--bs-body-bg); color: var(--bs-body-color); }
+		10% { background-color: var(--bs-body-bg); color: var(--bs-body-color); }
+		40% { background-color: #ffc107; color: #212529; }
+		60% { background-color: #ffc107; color: #212529;}
+		90% { background-color: var(--bs-body-bg);color: var(--bs-body-color); }
+		100% { background-color: var(--bs-body-bg);color: var(--bs-body-color); }
+		}
+	  .flashing {
+		animation: flash 3s infinite; /* 3秒钟的无限循环 */
+	  }
+	  
+	  /* 下雨的提示样式，黄白间隔 */
+	  @keyframes flash2 { 
+		0% { background-color: var(--bs-body-bg); }
+		10% { background-color: var(--bs-body-bg); }
+		40% { background-color: #664d03;}
+		60% { background-color: #664d03;}
+		90% { background-color: var(--bs-body-bg); }
+		100% { background-color: var(--bs-body-bg); }
+		}
+	
+	  .flashing-rain {
+		animation: flash 4s infinite; /* 4秒钟的无限循环 */
+		}
+	  
+	  
+		.flashing-rain2 {
+		animation: flash2 4s infinite; /* 4秒钟的无限循环 */
+		}
+	  
+	  /* 下雨的提示样式，黄白间隔 */
+	  @keyframes flash3 { 
+		0% { fill: var(--bs-body-color) }
+		10% { fill: var(--bs-body-color); }
+		40% { fill: #ffc107; }
+		60% { fill: #ffc107;}
+		90% { fill: var(--bs-body-color); }
+		100% { fill: var(--bs-body-color); }
+		}
+	  .flashing-svg {
+		animation: flash3 3s infinite; /* 3秒钟的无限循环 */
+	  }	
+	  
+      .b-example-divider {
+        width: 100%;
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .btn-bd-primary {
+        --bd-violet-bg: #712cf9;
+        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+        --bs-btn-font-weight: 600;
+        --bs-btn-color: var(--bs-white);
+        --bs-btn-bg: var(--bd-violet-bg);
+        --bs-btn-border-color: var(--bd-violet-bg);
+        --bs-btn-hover-color: var(--bs-white);
+        --bs-btn-hover-bg: #6528e0;
+        --bs-btn-hover-border-color: #6528e0;
+        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+        --bs-btn-active-color: var(--bs-btn-hover-color);
+        --bs-btn-active-bg: #5a23c8;
+        --bs-btn-active-border-color: #5a23c8;
+      }
+      .bd-mode-toggle {
+        z-index: 1500;
+      }
+		.slide-in {
+		  animation: slide-in 2s ease-in-out forwards; /* Animation */
+		}
+		.slide-bottom-in {
+		  animation: slide-bottom-in 2s ease-in-out forwards; /* Animation */
+		}
+		@keyframes slide-in {
+		  from {
+			transform: translateY(-200%); /* Start from the left outside of the view */
+		  }
+		  to {
+			transform: translateY(0); /* End at the normal position */
+		  }
+		}
+		@keyframes slide-bottom-in {
+		  from {
+			transform: translateY(120%); /* Start from the left outside of the view */
+		  }
+		  to {
+			transform: translateY(0); /* End at the normal position */
+		  }
+		}
+    </style>
+</head>
+<body>
+	<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+	  <symbol id="droplet" viewBox="0 0 16 16">
+		<path d="M8 16a6 6 0 0 0 6-6c0-1.655-1.122-2.904-2.432-4.362C10.254 4.176 8.75 2.503 8 0c0 0-6 5.686-6 10a6 6 0 0 0 6 6ZM6.646 4.646l.708.708c-.29.29-1.128 1.311-1.907 2.87l-.894-.448c.82-1.641 1.717-2.753 2.093-3.13Z"></path>
+	  </symbol>
+	</svg>
+		    <!--暗黑模式动态调整-->
+	<script>
+        // Get current date and time
+        function set_color_mode() {
+			var now = new Date();
+
+			// Get current hour
+			var hour = now.getHours();
+
+			// If current time is after 7am and before 7pm, use light mode
+			// Otherwise, use dark mode
+			
+			if (hour >= 7 && hour < 19) {
+				// Change data-bs-theme attribute
+				document.documentElement.setAttribute('data-bs-theme', 'light');
+				document.querySelectorAll('.dark-card-bg').forEach(function(element) {
+					element.classList.remove('dark-card-bg');
+					element.classList.add('light-card-bg');
+				});
+			} else {
+				document.documentElement.setAttribute('data-bs-theme', 'dark');
+				document.querySelectorAll('.light-card-bg').forEach(function(element) {
+					element.classList.remove('light-card-bg');
+					element.classList.add('dark-card-bg');
+				});
+			}
+		}
+    
+		// 动态获取和渲染数据的函数
+		var walktime={
+			"downstairs_985":5,
+			"downstairs_176":5,
+			"downstairs_opp_985":6,
+			"downstairs_opp_176":6,
+			"downstairs_945":6,
+			"bus_963":11
+						};
+		var bus_direction={
+			"downstairs_985":`MRT 美世界 <img src="/img/Downtown_Line_logo.svg" height="28px"/> <br>MRT 加冷  <img src="/img/East_West_Line_logo.svg" height="28px"/> 方向`,
+			"downstairs_176":`MRT 山景 / MRT 武吉班让 <img src="/img/Downtown_Line_logo.svg" height="28px"/> 方向`,
+			"downstairs_opp_985":`MRT 武吉巴督 <img src="/img/North_South_Line_logo.svg" height="28px"/> 方向`,
+			"downstairs_opp_176":`MRT 武吉巴督 <img src="/img/North_South_Line_logo.svg" height="28px"/> <br>MRT 裕廊东 <img src="/img/East_West_Line_logo.svg" height="28px"/> 方向）`,
+			"downstairs_945":`MRT 武吉巴督 <img src="/img/North_South_Line_logo.svg" height="28px"/> 方向`,
+			"bus_963":`NUS主校区 <img src="/img/nus_logo.svg" height="28px"/> 方向`
+						};
+		var bus_number={
+			"downstairs_985":`<small style="font-size:40%">SMRT </small><b>985</b>`,
+			"downstairs_176":`<small style="font-size:40%">SMRT </small><b>176</b>`,
+			"downstairs_opp_985":`<small style="font-size:40%">SMRT </small><b>985</b>`,
+			"downstairs_opp_176":`<small style="font-size:40%">SMRT </small><b>176</b>`,
+			"downstairs_945":`<small style="font-size:40%">TT </small><b>945</b>`,
+			"bus_963":`<small style="font-size:40%">TT </small><b>963</b>`
+			};
+		var bus_style={
+			"downstairs_985":`text-bg-danger`,
+			"downstairs_176":`text-bg-danger`,
+			"downstairs_opp_985":`text-bg-danger`,
+			"downstairs_opp_176":`text-bg-danger`,
+			"downstairs_945":`text-bg-success`,
+			"bus_963":`text-bg-success`
+			};
+		function extractTime(isoString) {
+			let date = new Date(isoString);
+			let hours = date.getHours();
+			let minutes = date.getMinutes();
+
+			let hoursStr = (hours < 10 ? '0' : '') + hours;
+			let minutesStr = (minutes < 10 ? '0' : '') + minutes;
+
+			return hoursStr + ':' + minutesStr;
+		}
+		
+		function updateTime() {
+			const now = new Date();
+			const hours = String(now.getHours()).padStart(2, '0');
+			const minutes = String(now.getMinutes()).padStart(2, '0');
+			const seconds = String(now.getSeconds()).padStart(2, '0');
+		  
+			const currentTime = `${hours}:${minutes}:${seconds}`;
+		  
+			console.log(`当前时间：${currentTime}`);
+		  
+			// 如果需要显示在网页上，你可以这样做
+			document.getElementById("timeDisplay").innerText = `${currentTime}`;
+		}
+
+		// 每秒更新一次时间
+		
+		function fetchDataAndUpdate() {
+			// 使用fetch获取数据
+			fetch('/api2')
+			.then(response => response.json())
+			.then(data => {
+			Object.keys(data).forEach(function(key) {
+				let dynacard1 = document.getElementById(key);
+				dynacard1.innerHTML = ''; // 清空内容
+				if (data[key] && data[key].length > 0 && key != 'weather') { // 检查data['bus_963']是否存在并且不为空
+					var no_of_card = 0;
+					data[key].forEach(function(value) {
+						let now = new Date();
+						let time = new Date(value);
+						let diff = (time - now) / 1000 / 60;
+						let content;
+						let arrive_time;
+						arrive_time = extractTime(time);
+						//content += '<br>';
+						let htmlContent;
+						var departure_note =``
+						if ( 0 <= parseInt(diff) - walktime[key] && parseInt(diff) - walktime[key] < 5 ) {
+							departure_note = `<span style="font-size:30px" class="badge rounded-pill my-0 flashing mx-1">
+											现在出发</span>`;
+						} else if ( parseInt(diff) - walktime[key] < 0  ) {
+							departure_note = `<span style="font-size:30px" class="badge rounded-pill text-bg-secondary my-0 mx-1">
+											即将到站</span>`;
+						}
+						if (no_of_card == 0) {
+							htmlContent = `
+									<div class="card shadow-sm bg-body-tertiary my-1">
+										<div class="card-body row align-items-center ">
+											<div class="col-2">
+												<span style="font-size:50px" class="mx-3">
+													<b>${arrive_time}</b>
+												</span>
+											</div>
+											<div class="col-2">
+												<span style="font-size:42px" class="badge ${bus_style[key]} my-0">
+													${bus_number[key]}
+												</span>
+											</div>
+											<div class="col-2">
+												${departure_note}
+											</div>
+											<div class="col-6">
+											<h4>
+												${bus_direction[key]}
+											</h4>
+											</div>
+										</div>
+									</div> `;
+									} else {
+							htmlContent = `
+									<div class="card shadow-sm bg-body-tertiary my-1">
+										<div class="card-body row align-items-center py-1">
+											<div class="col-2">
+												<span style="font-size:28px" class="mx-3">
+													<b>${arrive_time}</b>
+												</span>
+											</div>
+											<div class="col-2">
+												<span style="font-size:28px" class="opacity-80 badge ${bus_style[key]} my-0">
+													${bus_number[key]}
+												</span>
+											</div>
+											<div class="col-2">
+												${departure_note}
+											</div>
+											<div class="col-6">
+												${bus_direction[key]}
+											</div>
+										</div>
+									</div> `;}
+						no_of_card = no_of_card + 1;
+						dynacard1.innerHTML += htmlContent;
+					});
+				} else if ( key == 'weather' ) {
+					weathercontainer = document.getElementById(key);
+					weathercontainer.innerHTML = '';
+					var activeCarousel = document.querySelector('.carousel-item.active');
+					active_weather = '';
+					if (!activeCarousel) {
+					  // 没有找到活动的carousel项，则说明天气页面本应是活动项，设置为active
+					  active_weather = 'active';
+					}
+					//通过关键词判断是否下雨
+					var keywords = ["rain", "storm", "showers"]; 
+					var containsKeywords = keywords.some(function(keyword) {
+					  data[key].includes(keyword);
+					});
+					if(containsKeywords) {
+						//下雨的环节
+						flashing_rain = 'flashing-rain';
+						if (document.documentElement.getAttribute('data-bs-theme') == 'dark') {
+						  active_weather = 'flashing-rain2';
+						}
+						var rainscreenhtml = `
+							<div class="carousel-item ${active_weather}" data-bs-interval="11500">
+								<div class="row align-items-center ${flashing_rain} full-scring-768">
+									<div class="container-xxl col-5 my-4 m-auto">
+										<div class="p-3 rounded-3">
+											<svg xmlns="http://www.w3.org/2000/svg" width="125" height="60" fill="currentColor" class="bi bi-droplet-fill slide-in">
+											  <use href="#droplet"></use>
+											</svg>
+											<svg xmlns="http://www.w3.org/2000/svg" width="125" height="60" fill="currentColor" class="bi bi-droplet-fill slide-in">
+											  <use href="#droplet"></use>
+											</svg>
+											<svg xmlns="http://www.w3.org/2000/svg" width="125" height="60" fill="currentColor" class="bi bi-droplet-fill slide-in">
+											  <use href="#droplet"></use>
+											</svg>
+											<svg xmlns="http://www.w3.org/2000/svg" width="125" height="60" fill="currentColor" class="bi bi-droplet-fill slide-in">
+											  <use href="#droplet"></use>
+											</svg>
+											<br>
+											<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" fill="currentColor" class="bi bi-umbrella-fill slide-bottom-in flashing-svg" viewBox="0 0 16 16">
+											  <path fill-rule="evenodd" d="M8 0a.5.5 0 0 1 .5.5v.514C12.625 1.238 16 4.22 16 8c0 0 0 .5-.5.5-.149 0-.352-.145-.352-.145l-.004-.004-.025-.023a3.484 3.484 0 0 0-.555-.394A3.166 3.166 0 0 0 13 7.5c-.638 0-1.178.213-1.564.434a3.484 3.484 0 0 0-.555.394l-.025.023-.003.003s-.204.146-.353.146-.352-.145-.352-.145l-.004-.004-.025-.023a3.484 3.484 0 0 0-.555-.394 3.3 3.3 0 0 0-1.064-.39V13.5H8h.5v.039l-.005.083a2.958 2.958 0 0 1-.298 1.102 2.257 2.257 0 0 1-.763.88C7.06 15.851 6.587 16 6 16s-1.061-.148-1.434-.396a2.255 2.255 0 0 1-.763-.88 2.958 2.958 0 0 1-.302-1.185v-.025l-.001-.009v-.003s0-.002.5-.002h-.5V13a.5.5 0 0 1 1 0v.506l.003.044a1.958 1.958 0 0 0 .195.726c.095.191.23.367.423.495.19.127.466.229.879.229s.689-.102.879-.229c.193-.128.328-.304.424-.495a1.958 1.958 0 0 0 .197-.77V7.544a3.3 3.3 0 0 0-1.064.39 3.482 3.482 0 0 0-.58.417l-.004.004S5.65 8.5 5.5 8.5c-.149 0-.352-.145-.352-.145l-.004-.004a3.482 3.482 0 0 0-.58-.417A3.166 3.166 0 0 0 3 7.5c-.638 0-1.177.213-1.564.434a3.482 3.482 0 0 0-.58.417l-.004.004S.65 8.5.5 8.5C0 8.5 0 8 0 8c0-3.78 3.375-6.762 7.5-6.986V.5A.5.5 0 0 1 8 0z"/>
+											</svg>
+										</div>
+									</div>
+									<div class="container-xxl col-6 my-4 m-auto">
+										<div class="p-3 rounded-3 ">
+											<h1 style="font-size: 40px" class="my-4"><b>Bukit Batok</b></h1>
+											<h1 style="font-size: 90px" class="my-4"><b>${data[key]}</b></h1>
+											<h1 style="font-size: 60px" class="my-4"><b>两小时内将会下雨，<br>请不要忘记带伞/关窗</b></h1></div>
+									</div>
+							</div></div>
+							`;
+						weathercontainer.innerHTML += rainscreenhtml;
+					} else {
+						//不是下雨的环节
+						if (document.documentElement.getAttribute('data-bs-theme') === 'dark') {
+						  var weather_style="background-image: linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%);";
+						} else {
+						  var weather_style="background-image: linear-gradient(to top, #00c6fb 0%, #005bea 100%);";
+						}
+						var goodweatherHTML = `
+							<div class="carousel-item ${active_weather}" data-bs-interval="11500">
+								<div class="row align-items-center full-scring-768 text-bg-dark" style="${weather_style}">
+									<div class="container-xxl col-5 my-4 m-auto">
+										<div class="p-3 rounded-3">
+											<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" fill="currentColor" class="bi bi-cloud-sun" viewBox="0 0 16 16">
+											  <path d="M7 8a3.5 3.5 0 0 1 3.5 3.555.5.5 0 0 0 .624.492A1.503 1.503 0 0 1 13 13.5a1.5 1.5 0 0 1-1.5 1.5H3a2 2 0 1 1 .1-3.998.5.5 0 0 0 .51-.375A3.502 3.502 0 0 1 7 8zm4.473 3a4.5 4.5 0 0 0-8.72-.99A3 3 0 0 0 3 16h8.5a2.5 2.5 0 0 0 0-5h-.027z"/>
+											  <path d="M10.5 1.5a.5.5 0 0 0-1 0v1a.5.5 0 0 0 1 0v-1zm3.743 1.964a.5.5 0 1 0-.707-.707l-.708.707a.5.5 0 0 0 .708.708l.707-.708zm-7.779-.707a.5.5 0 0 0-.707.707l.707.708a.5.5 0 1 0 .708-.708l-.708-.707zm1.734 3.374a2 2 0 1 1 3.296 2.198c.199.281.372.582.516.898a3 3 0 1 0-4.84-3.225c.352.011.696.055 1.028.129zm4.484 4.074c.6.215 1.125.59 1.522 1.072a.5.5 0 0 0 .039-.742l-.707-.707a.5.5 0 0 0-.854.377zM14.5 6.5a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
+											</svg>
+										</div>
+									</div>
+									<div class="container-xxl col-6 my-4 m-auto">
+										<div class="p-3 rounded-3 ">
+											<h1 style="font-size: 40px" class="my-4 "><b>Bukit Batok</b></h1>
+											<h1 style="font-size: 90px" class="my-4"><b>${data[key]}</b></h1>
+											<h1 style="font-size: 60px" class="my-4"><b>天气良好</b></h1></div>
+									</div>
+							</div></div>
+						`;
+						weathercontainer.innerHTML += goodweatherHTML;
+					}
+				} else
+				{
+					// 如果data['key']为空，则插入所提供的HTML内容
+					dynacard1.innerHTML = '<div class="col"><div class="card shadow-sm bg-body-tertiary"><div class="card-body"><p class="card-text"><span style="font-size:24px">结束服务</span><br><span style="font-size:40px">---</span></p></div></div></div>';
+				}
+				});
+				document.querySelectorAll('.carousel-item').forEach(function(item) {
+				  // 查找是否存在包含'flashing'类的元素
+				  if (item.querySelector('.flashing') || item.querySelector('.flashing-rain')) {
+					// 如果找到，则设置这个特定幻灯片的间隔时间
+					item.setAttribute('data-bs-interval', '12000'); // 例如，10秒
+				  } else {
+					// 设置其他幻灯片的间隔时间
+					item.setAttribute('data-bs-interval', '9000'); // 例如，5秒
+				  }
+				});
+			})
+			.catch(error => console.error('获取数据出错:', error));
+		}
+
+		// 页面加载时调用函数
+		window.onload = function() {
+			set_color_mode();
+			fetchDataAndUpdate();
+			//setInterval(fetchDataAndUpdate, 21000); // 每21秒更新一次
+			setInterval(set_color_mode, 200000); // 每200秒更新一次
+			setInterval(updateTime, 1000);
+		}
+	</script>
+	<!--暗黑模式section结束-->
+	<main>
+	<div class="position-absolute top-0 end-0 m-0 mx-2"  style="z-index: 9999;">
+		<div class="card">
+		  <div class="card-body">
+			<p class="card-title m-0" style="font-size:32px">当前时间：<b id="timeDisplay"></b></p>
+		  </div>
+		</div>
+	</div>
+	<div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-pause="false">
+		<div class="carousel-inner">
+		<!-- 第一个模块 -->
+		<div class="carousel-item active light-card-bg" data-bs-interval="10000" id="first_carousel">
+		  <div class="container-xxl col m-0 m-auto full-scring-768">
+			<div class="p-3 rounded-3">
+			<h1 class="text-body-emphasis"><b>小区后门</b></h1>
+			<small class="text-body-secondary">预估步行时间：6 分钟</small>
+				<div class="row text-center">
+				<div class="col" id="downstairs_985">
+				<div class="d-flex justify-content-center" >
+				  <div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
+				  </div>
+				</div>
+				</div>
+				</div>			
+				<hr>
+				<div class="row text-center">
+				<div class="col" id="downstairs_176">
+				<div class="d-flex justify-content-center" >
+				  <div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
+				  </div>
+				</div>
+				</div>
+				</div>
+			</div>
+		  </div>
+		</div>
+		<!-- 第二个模块 -->
+		<div class="carousel-item light-card-bg" data-bs-interval="8000">
+		  <div class="container-xxl col m-0 m-auto full-scring-768">
+			<div class="p-3 rounded-3">
+				<h1 class="text-body-emphasis"><b>小区后门对面</b></h1>
+			<small class="text-body-secondary">预估步行时间：6 分钟</small>
+				
+				<div class="row text-center">
+				<div class="col" id="downstairs_opp_985">
+				<div class="d-flex justify-content-center" >
+				  <div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
+				  </div>
+				</div>
+				</div>
+				</div>
+				<hr>
+				
+				<div class="row text-center">
+				<div class="col" id="downstairs_opp_176">
+				<div class="d-flex justify-content-center" >
+				  <div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
+				  </div>
+				</div>
+				</div>
+				</div>
+			</div>
+		  </div>
+		</div>
+		<!-- 第三个模块 -->
+		<div class="carousel-item light-card-bg" data-bs-interval="8000">
+		  <div class="container-xxl col m-0 m-auto" style="height:384px">
+			<div class="px-3 py-3 rounded-3">
+				<h1 class="text-body-emphasis"><b>小区正门</b></h2>
+			<small class="text-body-secondary">预估步行时间：6 分钟</small>
+				
+				<div class="row text-center">
+				<div class="col" id="downstairs_945">
+				<div class="d-flex justify-content-center" >
+				  <div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
+				  </div>
+				</div>
+				</div>
+				</div>
+			</div>
+		  </div>
+		  <div class="container-xxl col m-0 m-auto" style="height:384px">
+			<div class="px-3 py-3 rounded-3">
+				<h1 class="text-body-emphasis"><b>美德咖啡店</b></h1>
+				<small class="text-body-secondary">预估步行时间：11 分钟</small>
+				
+				<div class="row text-center">
+				<div class="col" id="bus_963">
+				<div class="d-flex justify-content-center" >
+				  <div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
+				  </div>
+				</div>
+				</div></div>
+			</div>
+		  </div>
+		</div>
+		<div id="weather"></div>
+		
+	</div>
+	</main>
+	<!-- Bootstrap JS-->
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

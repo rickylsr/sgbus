@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="utf-8">
+	<meta http-equiv="Refresh" content="1200" />
+    <title>乌鸡鲅托Next Bus</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	<style>
+	.dynacard {
+		margin-top:20px;
+		margin-left:0;
+		margin-right:0;
+	}
+	.dynacard2 {
+		margin-top:0px;
+		margin-left:0;
+		margin-right:0;
+	}
+	.card {
+		min-height:134px;
+		}
+	h2 {
+		margin-bottom:14px
+	}
+	h4 {
+		margin-top:8px
+	}
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+	  /* 快要出发时候的闪烁样式，黄白间隔 */
+	  @keyframes flash { 
+		0% { background-color: var(--bs-body-bg); }
+		10% { background-color: var(--bs-body-bg); }
+		40% { background-color: #ffc107; color: #212529; }
+		60% { background-color: #ffc107; color: #212529;}
+		90% { background-color: var(--bs-body-bg); }
+		100% { background-color: var(--bs-body-bg); }
+		}
+	  .flashing {
+		animation: flash 3s infinite; /* 3秒钟的无限循环 */
+	  }	
+      .b-example-divider {
+        width: 100%;
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .btn-bd-primary {
+        --bd-violet-bg: #712cf9;
+        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+        --bs-btn-font-weight: 600;
+        --bs-btn-color: var(--bs-white);
+        --bs-btn-bg: var(--bd-violet-bg);
+        --bs-btn-border-color: var(--bd-violet-bg);
+        --bs-btn-hover-color: var(--bs-white);
+        --bs-btn-hover-bg: #6528e0;
+        --bs-btn-hover-border-color: #6528e0;
+        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+        --bs-btn-active-color: var(--bs-btn-hover-color);
+        --bs-btn-active-bg: #5a23c8;
+        --bs-btn-active-border-color: #5a23c8;
+      }
+      .bd-mode-toggle {
+        z-index: 1500;
+      }
+    </style>
+</head>
+<body>
+    <!--暗黑模式动态调整-->
+	<script>
+        // Get current date and time
+        function set_color_mode() {
+		var now = new Date();
+
+        // Get current hour
+        var hour = now.getHours();
+
+        // If current time is after 7am and before 7pm, use light mode
+        // Otherwise, use dark mode
+		
+        if (hour >= 7 && hour < 19) {
+            // Change data-bs-theme attribute
+            document.documentElement.setAttribute('data-bs-theme', 'light');
+        } else {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+        }}
+    
+		// 动态获取和渲染数据的函数
+		var walktime={
+			"downstairs_985":5,
+			"downstairs_176":5,
+			"downstairs_opp_985":6,
+			"downstairs_opp_176":6,
+			"downstairs_945":6,
+			"bus_963":11
+						};
+		function fetchDataAndUpdate() {
+			// 使用fetch获取数据
+			fetch('/api')
+			.then(response => response.json())
+			.then(data => {
+			Object.keys(data).forEach(function(key) {
+				let dynacard1 = document.getElementById(key);
+				dynacard1.innerHTML = ''; // 清空内容
+				if (data[key] && data[key].length > 0) { // 检查data['bus_963']是否存在并且不为空
+					data[key].forEach(function(value) {
+						let content;
+						if (value <= 1) {
+							content = '<span style="font-size:24px">到站</span>';
+						} else {
+							content = `距离发车<span style="font-size:28px">${value}</span>分钟`;
+						}
+
+						content += '<br>';
+						let htmlContent;
+						if (parseInt(value) - walktime[key] <= 0) {
+							content += '<span style="font-size:40px">---</span>';
+							htmlContent = `<div class="col"><div class="card shadow-sm"><div class="card-body"><p class="card-text">${content}</p></div></div></div>`;
+						} else {
+							content += `<span style="font-size:40px"><b>${value - walktime[key]}</b></span><span style="font-size:28px">分钟之内出门</span>`;
+							if (parseInt(value) - walktime[key] <=4) { //出发时间小于四分钟的时候闪烁
+								// 拼接HTML内容并将其添加到dynacard元素中
+								htmlContent = `<div class="col"><div class="card shadow-sm flashing"><div class="card-body"><p class="card-text">${content}</p></div></div></div>`;
+							} else {
+								htmlContent = `<div class="col"><div class="card shadow-sm"><div class="card-body"><p class="card-text">${content}</p></div></div></div>`;
+							}
+						}
+						dynacard1.innerHTML += htmlContent;
+					});
+				} else {
+					// 如果data['bus_963']为空，则插入所提供的HTML内容
+					dynacard1.innerHTML = '<div class="col"><div class="card shadow-sm"><div class="card-body"><p class="card-text"><span style="font-size:24px">结束服务</span><br><span style="font-size:40px">---</span></p></div></div></div>';
+					}
+				});
+				document.querySelectorAll('.carousel-item').forEach(function(item) {
+				  // 查找是否存在包含'flashing'类的元素
+				  if (item.querySelector('.flashing')) {
+					// 如果找到，则设置这个特定幻灯片的间隔时间
+					item.setAttribute('data-bs-interval', '12000'); // 例如，10秒
+				  } else {
+					// 设置其他幻灯片的间隔时间
+					item.setAttribute('data-bs-interval', '5000'); // 例如，5秒
+				  }
+				});
+			})
+			.catch(error => console.error('获取数据出错:', error));
+		}
+
+		// 页面加载时调用函数
+		window.onload = function() {
+			set_color_mode();
+			fetchDataAndUpdate();
+			setInterval(fetchDataAndUpdate, 21000); // 每21秒更新一次
+			setInterval(set_color_mode, 200000); // 每20秒更新一次
+			
+		}
+	</script>
+	<!--暗黑模式section结束-->
+	<main>
+	<div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-pause="false">
+		<div class="carousel-inner">
+		<!-- 第一个模块 -->
+		<div class="carousel-item active" data-bs-interval="8000">
+		  <div class="container col my-4 m-auto">
+			<div class="p-5 bg-body-tertiary rounded-3">
+			<h2 class="text-body-emphasis">小区后门</h1>
+			<small class="text-body-secondary">预估步行时间：6 分钟</small>
+				<h4><b>985</b>（MRT 美世界 <img src="/img/Downtown_Line_logo.svg" height="28px"/> / 加冷  <img src="/img/East_West_Line_logo.svg" height="28px"/> 方向）</h4>
+				<div class="row text-center" id="downstairs_985">
+				<div class="d-flex justify-content-center">
+				  <div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
+				  </div>
+				</div>	
+				</div>			
+				<h4><b>176</b>（MRT 山景 / MRT 武吉班让 <img src="/img/Downtown_Line_logo.svg" height="28px"/> 方向）</h4>
+				<div class="row text-center" id="downstairs_176">
+				<div class="d-flex justify-content-center">
+				  <div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
+				  </div>
+				</div>
+				</div>
+			</div>
+		  </div>
+		</div>
+		<!-- 第二个模块 -->
+		<div class="carousel-item" data-bs-interval="8000">
+		  <div class="container col my-4 m-auto">
+			<div class="p-5 bg-body-tertiary rounded-3">
+				<h2 class="text-body-emphasis">小区后门对面</h1>
+			<small class="text-body-secondary">预估步行时间：6 分钟</small>
+				<h4><b>985</b>（MRT 武吉巴督 <img src="/img/North_South_Line_logo.svg" height="28px"/> 方向）</h4>
+				<div class="row text-center" id="downstairs_opp_985">
+				<div class="d-flex justify-content-center">
+				  <div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
+				  </div>
+				</div>
+				</div>
+				
+				<h4><b>176</b>（MRT 武吉巴督 <img src="/img/North_South_Line_logo.svg" height="28px"/> / 裕廊东 <img src="/img/East_West_Line_logo.svg" height="28px"/> 方向）</h4>
+				<div class="row text-center" id="downstairs_opp_176">
+				<div class="d-flex justify-content-center">
+				  <div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
+				  </div>
+				</div>
+				</div>
+			</div>
+		  </div>
+		</div>
+		<!-- 第三个模块 -->
+		<div class="carousel-item" data-bs-interval="8000">
+		  <div class="container col my-2 m-auto">
+			<div class="px-5 py-3 bg-body-tertiary rounded-3">
+				<h2 class="text-body-emphasis">小区正门</h2>
+			<small class="text-body-secondary">预估步行时间：6 分钟</small>
+				<h4><b>945</b>（MRT 武吉巴督 <img src="/img/North_South_Line_logo.svg" height="28px"/> 方向）</h4>
+				<div class="row text-center" id="downstairs_945">
+				<div class="d-flex justify-content-center">
+				  <div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
+				  </div>
+				</div>
+				</div>
+			</div>
+		  </div>
+		<!--</div> -->
+		<!-- 第四个模块 -->
+		<!--<div class="carousel-item" data-bs-interval="6000">-->
+		  <div class="container col my-2 m-auto">
+			<div class="px-5 py-3 bg-body-tertiary rounded-3">
+				<h2 class="text-body-emphasis">美德咖啡店</h1>
+				<small class="text-body-secondary">预估步行时间：11 分钟</small>
+				<h4><b>963</b>（NUS主校区 <img src="/img/nus_logo.svg" height="28px"/> 方向）</h4>
+				<div class="row text-center" id="bus_963">
+				<div class="d-flex justify-content-center">
+				  <div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
+				  </div>
+				</div></div>
+			</div>
+		  </div>
+		</div>
+	</div>
+	
+	<!--<div class="carousel-item" data-bs-interval="9000">
+	<div class="row dynacard d-none">
+		<div class="container col my-2 mx-2">
+			
+		</div>
+		<div class="container col my-2 mx-2">
+			
+		</div>
+	</div>
+	<div class="row dynacard2 d-none">
+		<div class="container col my-2 mx-2">
+			<div class="p-5 bg-body-tertiary rounded-3">
+				
+			</div>
+		</div>
+		<div class="container col my-2 mx-2">
+			<div class="p-5 bg-body-tertiary rounded-3">
+				
+			</div>
+		</div>
+	</div>
+	</div>-->
+	
+	<!--<div class="row dynacard">
+		<div class="container col my-2 mx-2">
+			<div class="p-5 bg-body-tertiary rounded-3">
+			<h2 class="text-body-emphasis">小区后门</h1>
+			<small class="text-body-secondary">预估步行时间：6 分钟</small>
+				<h4><b>985</b>（MRT 美世界 <img src="/img/Downtown_Line_logo.svg" height="28px"/> / 加冷  <img src="/img/East_West_Line_logo.svg" height="28px"/> 方向）</h4>
+				<div class="row text-center" id="downstairs_985">
+				<div class="d-flex justify-content-center">
+				  <div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
+				  </div>
+				</div>	
+				</div>			
+				<h4><b>176</b>（MRT 山景 / MRT 武吉班让 <img src="/img/Downtown_Line_logo.svg" height="28px"/> 方向）</h4>
+				<div class="row text-center" id="downstairs_176">
+				<div class="d-flex justify-content-center">
+				  <div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
+				  </div>
+				</div>
+				</div>
+			</div>
+		</div>
+		<div class="container col my-2 mx-2">
+			<div class="p-5 bg-body-tertiary rounded-3">
+				<h2 class="text-body-emphasis">小区后门对面</h1>
+			<small class="text-body-secondary">预估步行时间：6 分钟</small>
+				<h4><b>985</b>（MRT 武吉巴督 <img src="/img/North_South_Line_logo.svg" height="28px"/> 方向）</h4>
+				<div class="row text-center" id="downstairs_opp_985">
+				<div class="d-flex justify-content-center">
+				  <div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
+				  </div>
+				</div>
+				</div>
+				
+				<h4><b>176</b>（MRT 武吉巴督 <img src="/img/North_South_Line_logo.svg" height="28px"/> / 裕廊东 <img src="/img/East_West_Line_logo.svg" height="28px"/> 方向）</h4>
+				<div class="row text-center" id="downstairs_opp_176">
+				<div class="d-flex justify-content-center">
+				  <div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
+				  </div>
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row dynacard2">
+		<div class="container col my-2 mx-2">
+			<div class="p-5 bg-body-tertiary rounded-3">
+				<h2 class="text-body-emphasis">小区正门</h2>
+			<small class="text-body-secondary">预估步行时间：6 分钟</small>
+				<h4><b>945</b>（MRT 武吉巴督 <img src="/img/North_South_Line_logo.svg" height="28px"/> 方向）</h4>
+				<div class="row text-center" id="downstairs_945">
+				<div class="d-flex justify-content-center">
+				  <div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
+				  </div>
+				</div>
+				</div>
+			</div>
+		</div>
+		<div class="container col my-2 mx-2">
+			<div class="p-5 bg-body-tertiary rounded-3">
+				<h2 class="text-body-emphasis">美德咖啡店</h1>
+				<small class="text-body-secondary">预估步行时间：11 分钟</small>
+				<h4><b>963</b>（NUS主校区 <img src="/img/nus_logo.svg" height="28px"/> 方向）</h4>
+				<div class="row text-center" id="bus_963">
+				<div class="d-flex justify-content-center">
+				  <div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
+				  </div>
+				</div></div>
+			</div>
+		</div>
+	</div>-->
+	</main>
+	<!-- Bootstrap JS-->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
